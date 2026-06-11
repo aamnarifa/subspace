@@ -9,6 +9,30 @@ def get_contacts(domain):
     Search people at a company using Prospeo Search Person API.
     Uses centralized HTTP client and tracks credits.
     """
+    import config
+    if config.MOCK_MODE:
+        logger.info(f"[MOCK] Simulating Prospeo search for: {domain}")
+        mock_contacts = [
+            {
+                "name": "Sarah Connor",
+                "title": "Director of Operations",
+                "linkedin": "https://www.linkedin.com/in/sarahconnor-mock",
+                "person_id": "person_12345",
+                "company_name": domain.split(".")[0].capitalize(),
+                "company_domain": domain
+            },
+            {
+                "name": "John Doe",
+                "title": "Head of Engineering",
+                "linkedin": "https://www.linkedin.com/in/johndoe-mock",
+                "person_id": "person_67890",
+                "company_name": domain.split(".")[0].capitalize(),
+                "company_domain": domain
+            }
+        ]
+        logger.info(f"[MOCK] Found {len(mock_contacts)} mock contacts for {domain}")
+        return mock_contacts
+
     if not PROSPEO_API_KEY:
         logger.error("Prospeo API key is not configured.")
         return []

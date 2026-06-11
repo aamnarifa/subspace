@@ -10,6 +10,20 @@ def get_apollo_contacts(domain: str):
     """
     Search people at a company using Apollo People Search API.
     """
+    if config.MOCK_MODE:
+        logger.info(f"[MOCK] Simulating Apollo search for: {domain}")
+        mock_contacts = [
+            {
+                "name": "Jane Miller",
+                "title": "Operations Manager",
+                "email": f"jane.miller@{domain}",
+                "linkedin": "https://www.linkedin.com/in/janemiller-mock",
+                "person_id": "apollo_11111",
+                "company_domain": domain
+            }
+        ]
+        logger.info(f"[MOCK] Apollo returned {len(mock_contacts)} mock contacts for {domain}")
+        return mock_contacts
 
     if not config.APOLLO_API_KEY:
 

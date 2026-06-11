@@ -9,6 +9,8 @@ from utils.exceptions import ConfigurationError
 
 load_dotenv()
 
+MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
+
 # ==============================================================================
 # Environment Variable Sanitization
 # ==============================================================================
@@ -199,35 +201,36 @@ def is_valid_key(value):
 
 errors = []
 
-if not is_valid_key(OCEAN_API_KEY):
+if not MOCK_MODE:
+    if not is_valid_key(OCEAN_API_KEY):
 
-    errors.append(
-        "OCEAN_API_KEY is missing."
-    )
+        errors.append(
+            "OCEAN_API_KEY is missing."
+        )
 
-if not is_valid_key(BREVO_API_KEY):
+    if not is_valid_key(BREVO_API_KEY):
 
-    errors.append(
-        "BREVO_API_KEY is missing."
-    )
+        errors.append(
+            "BREVO_API_KEY is missing."
+        )
 
-has_lead_provider = any([
-    is_valid_key(PROSPEO_API_KEY),
-    is_valid_key(APOLLO_API_KEY)
-])
+    has_lead_provider = any([
+        is_valid_key(PROSPEO_API_KEY),
+        is_valid_key(APOLLO_API_KEY)
+    ])
 
-if not has_lead_provider:
+    if not has_lead_provider:
 
-    errors.append(
-        "At least one provider must be configured "
-        "(PROSPEO_API_KEY or APOLLO_API_KEY)."
-    )
+        errors.append(
+            "At least one provider must be configured "
+            "(PROSPEO_API_KEY or APOLLO_API_KEY)."
+        )
 
-if errors:
+    if errors:
 
-    raise ConfigurationError(
-        "\n".join(errors)
-    )
+        raise ConfigurationError(
+            "\n".join(errors)
+        )
 
 # ==============================================================================
 # Data Paths

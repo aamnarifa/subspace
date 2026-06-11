@@ -21,6 +21,11 @@ def send_email(
             HTTP status code on success/failure.
             None if request could not be completed.
     """
+    import config
+    if config.MOCK_MODE:
+        logger.info(f"[MOCK] Simulating sending outreach email to {recipient_email} with subject '{subject}'")
+        return 201
+
     if not BREVO_API_KEY:
         logger.error("Brevo API key is not configured.")
         return None

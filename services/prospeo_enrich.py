@@ -9,6 +9,21 @@ def enrich_person(person_id):
     Enriches a person using Prospeo Enrich Person API.
     Uses centralized HTTP client and tracks credits.
     """
+    import config
+    if config.MOCK_MODE:
+        logger.info(f"[MOCK] Simulating Prospeo enrichment for person_id: {person_id}")
+        mock_email = "sarah.connor@mock-enterprise.com" if "12345" in person_id else "john.doe@mock-tech-labs.io"
+        return {
+            "error": False,
+            "credits_spent": 1,
+            "person": {
+                "email": {
+                    "email": mock_email,
+                    "status": "valid"
+                }
+            }
+        }
+
     url = "https://api.prospeo.io/enrich-person"
     if not PROSPEO_API_KEY:
         logger.error("Prospeo API key is not configured.")
