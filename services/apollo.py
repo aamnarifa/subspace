@@ -12,11 +12,12 @@ def get_apollo_contacts(domain: str):
     """
     if config.MOCK_MODE:
         logger.info(f"[MOCK] Simulating Apollo search for: {domain}")
+        mock_email = config.TEST_RECIPIENT_EMAIL or f"jane.miller@{domain}"
         mock_contacts = [
             {
                 "name": "Jane Miller",
                 "title": "Operations Manager",
-                "email": f"jane.miller@{domain}",
+                "email": mock_email,
                 "linkedin": "https://www.linkedin.com/in/janemiller-mock",
                 "person_id": "apollo_11111",
                 "company_domain": domain

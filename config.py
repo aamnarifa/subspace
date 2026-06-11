@@ -10,6 +10,7 @@ from utils.exceptions import ConfigurationError
 load_dotenv()
 
 MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
+TEST_RECIPIENT_EMAIL = os.getenv("TEST_RECIPIENT_EMAIL")
 
 # ==============================================================================
 # Environment Variable Sanitization

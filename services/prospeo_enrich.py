@@ -12,7 +12,7 @@ def enrich_person(person_id):
     import config
     if config.MOCK_MODE:
         logger.info(f"[MOCK] Simulating Prospeo enrichment for person_id: {person_id}")
-        mock_email = "sarah.connor@mock-enterprise.com" if "12345" in person_id else "john.doe@mock-tech-labs.io"
+        mock_email = config.TEST_RECIPIENT_EMAIL or ("sarah.connor@mock-enterprise.com" if "12345" in person_id else "john.doe@mock-tech-labs.io")
         return {
             "error": False,
             "credits_spent": 1,
