@@ -45,9 +45,16 @@ def get_contacts(domain):
             backoff_factor=ENRICH_BACKOFF_FACTOR
         )
 
-        response.raise_for_status()
+        try:
+            data = response.json()
+        except ValueError:
+            data = {}
 
-        data = response.json()
+        if response.status_code == 400 and data.get("error_code") == "NO_RESULTS":
+            logger.info(f"Prospeo returned no results for domain: {domain}")
+            return []
+
+        response.raise_for_status()
 
         print("\n========== PROSPEO RESPONSE ==========")
         print(data)
