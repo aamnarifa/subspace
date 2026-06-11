@@ -207,13 +207,13 @@ if not is_valid_key(OCEAN_API_KEY):
         "OCEAN_API_KEY is missing."
     )
 
+# Always validate BREVO_API_KEY as Brevo runs on the real API
+if not is_valid_key(BREVO_API_KEY):
+    errors.append(
+        "BREVO_API_KEY is missing."
+    )
+
 if not MOCK_MODE:
-    if not is_valid_key(BREVO_API_KEY):
-
-        errors.append(
-            "BREVO_API_KEY is missing."
-        )
-
     has_lead_provider = any([
         is_valid_key(PROSPEO_API_KEY),
         is_valid_key(APOLLO_API_KEY)
