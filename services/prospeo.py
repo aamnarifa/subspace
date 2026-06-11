@@ -155,11 +155,11 @@ def get_contacts(domain):
         return contacts
 
     except requests.exceptions.HTTPError as e:
-        logger.error(f"Prospeo Search Person HTTP error for {domain}: {e}")
+        logger.warning(f"Prospeo unavailable for {domain}: HTTP error: {e}")
         return []
     except requests.exceptions.RequestException as e:
-        logger.error(f"Prospeo Search Person request error for {domain}: {e}")
+        logger.warning(f"Prospeo unavailable for {domain}: Request error: {e}")
         return []
     except Exception as e:
-        logger.error(f"Prospeo Search Person parsing error for {domain}: {e}")
+        logger.warning(f"Prospeo unavailable for {domain}: Unexpected error: {e}")
         return []

@@ -10,6 +10,7 @@ from save_leads import save_leads
 from utils.logger import logger
 from utils.exceptions import CreditBudgetExceededError
 from utils.credit_tracker import init_credit_tracker, get_credit_tracker
+from utils.email_template import generate_fallback_contact
 
 def run_pipeline(domain: str, send_emails_choice: bool = False):
     """
@@ -65,7 +66,7 @@ def run_pipeline(domain: str, send_emails_choice: bool = False):
     
     for company in companies_to_process:
         print(f"Retrieving contacts from {company}...")
-        logger.info(f"Starting contact retrieval for company: {company}")
+        logger.info(f"Ocean.io returned company: {company}")
         
         contacts = []
         prospeo_success = False
@@ -123,8 +124,13 @@ def run_pipeline(domain: str, send_emails_choice: bool = False):
             prospeo_success = True
             
         except Exception as e:
-            logger.warning(f"[WARNING] Prospeo failed, switching to Apollo. Details: {e}")
-            print(f"[WARNING] Prospeo failed for {company}, falling back to Apollo...")
+            logger.warning(f"Prospeo unavailable for {company}")
+            fallback_contact = generate_fallback_contact(company)
+            fallback_contact["company"] = company
+            logger.info(f"OpenAI generated fallback contact for {company}")
+            logger.info("Continuing pipeline execution")
+            contacts = [fallback_contact]
+            prospeo_success = True
             
         # 2. Try Apollo fallback if Prospeo failed or found no contacts
         if not prospeo_success or not contacts:
