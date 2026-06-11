@@ -201,13 +201,13 @@ def is_valid_key(value):
 
 errors = []
 
+# Always validate OCEAN_API_KEY as Ocean.io runs on the real API
+if not is_valid_key(OCEAN_API_KEY):
+    errors.append(
+        "OCEAN_API_KEY is missing."
+    )
+
 if not MOCK_MODE:
-    if not is_valid_key(OCEAN_API_KEY):
-
-        errors.append(
-            "OCEAN_API_KEY is missing."
-        )
-
     if not is_valid_key(BREVO_API_KEY):
 
         errors.append(
@@ -226,11 +226,11 @@ if not MOCK_MODE:
             "(PROSPEO_API_KEY or APOLLO_API_KEY)."
         )
 
-    if errors:
+if errors:
 
-        raise ConfigurationError(
-            "\n".join(errors)
-        )
+    raise ConfigurationError(
+        "\n".join(errors)
+    )
 
 # ==============================================================================
 # Data Paths

@@ -32,13 +32,6 @@ def get_similar_companies(domain: str):
     """
     Fetch lookalike companies from Ocean.io using centralized http client.
     """
-    import config
-    if config.MOCK_MODE:
-        logger.info(f"[MOCK] Simulating Ocean.io search for similar companies to: {domain}")
-        mock_companies = ["mock-enterprise.com", "mock-tech-labs.io", "mock-digital-solutions.co"]
-        logger.info(f"[MOCK] Found {len(mock_companies)} mock companies: {mock_companies}")
-        return mock_companies
-
     if not OCEAN_API_KEY:
         logger.error("Ocean API key not configured.")
         return []
